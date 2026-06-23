@@ -14,13 +14,15 @@ useEffect(() => {
     const token = localStorage.getItem("token");
     const user = JSON.parse(localStorage.getItem("user"));
 
-    if (token && user) {
-      if (user.role === "Teacher") {
-        navigate("/admin", { replace: true });
-      } else {
-        navigate("/user", { replace: true });
-      }
-    }
+if (token && user) {
+  if (user.role === "Teacher") {
+    navigate("/admin", { replace: true });
+  } else if (user.role === "Maintance") {
+    navigate("/maintance", { replace: true });
+  } else {
+    navigate("/user", { replace: true });
+  }
+}
   }, [navigate]);
   const handleGoogleLoginSuccess = async (tokenResponse) => {
     setIsLoading(true);
@@ -41,11 +43,14 @@ useEffect(() => {
         toast.success('Successfully logged in!'); // English Toast
         
         setTimeout(() => {
-            if (user.role === 'Teacher') {
-              navigate('/admin', { replace: true });
-            } else {
-              navigate('/user', { replace: true });
-            }
+             if (user.role === 'Teacher') {
+            navigate('/admin', { replace: true });
+            } else if (user.role === 'Maintance') {
+            navigate('/maintance', { replace: true });
+            } else {
+
+  navigate('/user', { replace: true });
+}
         }, 1000);
       }
     } catch (error) {

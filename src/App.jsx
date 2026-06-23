@@ -6,6 +6,7 @@ import UserLayout from './layout/UserLayout'
 import AdminLayout from './layout/AdminLayout'
 import ProtectedRoute from './utilities/ProtectedRoutes'
 import { Toaster } from 'react-hot-toast';
+import MaintanceLayout from './layout/MaintanceLayout'
 
 const App = () => {
   return (
@@ -21,7 +22,9 @@ const App = () => {
       <Route element={<ProtectedRoute allowedRoles={['Student']} />}>
         <Route path='/user' element={<UserLayout />} />
       </Route>
-
+      <Route element={<ProtectedRoute allowedRoles={['Maintance']} />}>
+        <Route path='/maintance' element={<MaintanceLayout />} />
+      </Route>
       <Route path='*' element={<AuthLayout />} />
     </Routes>
   )
