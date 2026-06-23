@@ -69,7 +69,7 @@ const handleJoinSection = async () => {
 
         // ২. ওভারঅল পার্সেন্টেজ হিসাব করা
         const overallPercentage = total_problems > 0 
-          ? Math.round((solved_problems / total_problems) * 100) 
+          ? Math.round((solved_problems / total_problems) * 25) 
           : 0;
 
         // ৩. স্ট্যাটস কার্ডস ডেটা সেট করা
@@ -116,7 +116,7 @@ setLabHistory(formattedLabs);
 
         const formattedLeaderboard = sortedStudents.map((student, index) => {
           const studentPercentage = total_problems > 0 
-            ? Math.round(((student?.solved_problems || 0) / total_problems) * 100) 
+            ? Math.round(((student?.solved_problems || 0) / total_problems) * 25) 
             : 0;
 
           const isMe = student?.userId?._id === user?._id || student?._id === user?._id;
@@ -146,8 +146,8 @@ setLabHistory(formattedLabs);
   }, []);
 
   const getMarkBadgeClass = (marks) => {
-    if (marks >= 80) return "bg-emerald-100 text-emerald-800 border border-emerald-200"; 
-    if (marks >= 50) return "bg-teal-50 text-teal-700 border border-teal-100"; 
+    if (marks >= 20) return "bg-emerald-100 text-emerald-800 border border-emerald-200"; 
+    if (marks >= 15) return "bg-teal-50 text-teal-700 border border-teal-100"; 
     if (marks > 0) return "bg-amber-50 text-amber-700 border border-amber-100";
     return "bg-gray-100 text-gray-500 border border-gray-200"; 
   };
@@ -283,7 +283,7 @@ if (isLoading) return <div className="min-h-screen bg-[#E0FEF9] flex items-cente
                         <td className="py-4 px-6 text-center tabular-nums text-gray-600">{lab.solved}</td>
                         <td className="py-4 px-6 text-center">
                           <span className={`inline-block px-3 py-0.5 rounded-full text-xs font-bold min-w-[45px] text-center ${getMarkBadgeClass(lab.marks)}`}>
-                            {lab.marks}%
+                            {lab.marks}
                           </span>
                         </td>
                       </tr>
@@ -339,7 +339,7 @@ if (isLoading) return <div className="min-h-screen bg-[#E0FEF9] flex items-cente
                       />
                     </div>
                     <span className="text-sm font-bold text-teal-950 tabular-nums min-w-[40px] text-right">
-                      {student.percentage}%
+                      {student.percentage}
                     </span>
                   </div>
 

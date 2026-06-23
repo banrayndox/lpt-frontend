@@ -219,7 +219,7 @@ const handleClearSection = async () => {
       }
     });
     const totalPossible = labs.reduce((sum, lab) => sum + (lab?.totalProblems || 0), 0);
-    const percentage = totalPossible > 0 ? Math.round((totalSolved / totalPossible) * 100) : 0;
+    const percentage = totalPossible > 0 ? Math.round((totalSolved / totalPossible) * 25) : 0;
     return { totalSolved, totalPossible, percentage };
   };
 
@@ -372,7 +372,7 @@ const handleClearSection = async () => {
                             ))}
                             <td className="py-4 px-6 text-right">
                               <div className="font-bold text-sm text-cyan-700">{totalSolved}/{totalPossible}</div>
-                              <div className="text-[10px] text-gray-400 font-medium">{percentage}% accuracy</div>
+                              <div className="text-[10px] text-gray-400 font-medium">{percentage} Mark</div>
                             </td>
                           </tr>
                           
@@ -384,7 +384,7 @@ const handleClearSection = async () => {
                                   <div className="flex justify-between items-center">
                                     <div>
                                       <h3 className="font-bold text-gray-800 text-sm">Modify scores for {student.name}</h3>
-                                      <p className="text-[11px] text-gray-400 font-medium">Changes will be saved directly via Axios API</p>
+                                      <p className="text-[11px] text-gray-400 font-medium">Changes will be saved directly</p>
                                     </div>
                                     <div className="flex gap-2">
                                       <button onClick={() => setExpandedStudentId(null)} className="px-3 py-2 bg-white border border-gray-200 font-bold text-xs rounded-xl hover:bg-gray-50">Cancel</button>
