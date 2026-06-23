@@ -23,7 +23,7 @@ const Header = () => {
       <div className="max-w-7xl mx-auto h-16 px-6 flex items-center justify-between">
         
         {/* Logo / Title Section */}
-        <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate(savedUser?.role === 'Teacher' ? '/admin' : '/user')}>
+        <div className="flex items-center gap-3 cursor-pointer" >
           <div className="p-2 rounded-xl bg-cyan-500/10 text-cyan-600 shadow-inner">
             <Activity className="w-5 h-5 animate-pulse" />
           </div>

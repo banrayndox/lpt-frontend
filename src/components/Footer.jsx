@@ -8,7 +8,7 @@ const Footer = () => {
         <p className="text-sm">
           Developed By —{" "}
           <a
-            href="https://facebook.com/banrayndox.7"
+            href="https://www.facebook.com/profile.php?id=61588270839184"
             target="_blank"
             rel="noopener noreferrer"
             className="font-semibold hover:text-blue-600 transition"
@@ -20,7 +20,7 @@ const Footer = () => {
         <div className="flex items-center gap-4 mt-4 sm:mt-0">
           {/* Facebook */}
           <a
-            href="https://facebook.com/banrayndox.7"
+            href="https://www.facebook.com/profile.php?id=61588270839184"
             target="_blank"
             rel="noopener noreferrer"
             className="hover:text-blue-600 transition"
@@ -36,7 +36,7 @@ const Footer = () => {
 
           {/* Instagram */}
           <a
-            href="https://instagram.com/"
+            href="https://instagram.com/banrayndox"
             target="_blank"
             rel="noopener noreferrer"
             className="hover:text-pink-500 transition"
@@ -56,7 +56,7 @@ const Footer = () => {
 
           {/* LinkedIn */}
           <a
-            href="https://linkedin.com/"
+            href="https://linkedin.com/in/banrayndox"
             target="_blank"
             rel="noopener noreferrer"
             className="hover:text-blue-700 transition"
