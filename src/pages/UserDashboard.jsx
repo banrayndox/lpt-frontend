@@ -83,7 +83,7 @@ const studentsOnly = (all_students_profile_in_this_section || [])
     // role ফিল্ডটি যেখানেই থাকুক না কেন, খুঁজে বের করি
     const role = student?.role || student?.userId?.role || '';
     // কেস-ইনসেনসিটিভ তুলনা (যেমন 'Student', 'student', 'STUDENT' সবই ধরা পড়বে)
-    return role.toLowerCase() === 'student';
+    return role.toLowerCase() === 'Student';
   });
 
 const sortedStudents = studentsOnly
