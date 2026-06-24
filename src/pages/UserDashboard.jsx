@@ -56,7 +56,7 @@ const UserDashboard = () => {
         const { user_labs, all_students_profile_in_this_section, total_problems, solved_problems } = response.data.result;
 
         // 📊 স্ট্যাটস
-        const overallPercentage = total_problems > 0 ? Math.round((solved_problems / total_problems) * 100) : 0;
+        const overallPercentage = total_problems > 0 ? Math.round((solved_problems / total_problems) * 25) : 0;
         const labsCompletedCount = Array.isArray(user_labs)
           ? user_labs.filter(lab => lab?.score > 0).length.toString()
           : "0";
@@ -74,23 +74,25 @@ const UserDashboard = () => {
           date: item.lab?.date ? new Date(item.lab.date).toLocaleDateString('en-CA') : "N/A",
           solved: `${item.score || 0}/${item.lab?.totalProblems || 0}`,
           marks: item.lab?.totalProblems > 0
-            ? Math.round((item.score / item.lab.totalProblems) * 100)
+            ? Math.round((item.score / item.lab.totalProblems) * 25)
             : 0
         })));
 
-        // 🏆 লিডারবোর্ড
-        const sortedStudents = [...(all_students_profile_in_this_section || [])]
-          .sort((a, b) => (b?.solved_problems || 0) - (a?.solved_problems || 0));
+const studentsOnly = (all_students_profile_in_this_section || [])
+  .filter(student => student?.userId?.role === 'student'); // ফিল্টার
 
-        setLeaderboard(sortedStudents.map((student, index) => ({
-          rank: `#${index + 1}`,
-          name: student?.userId?.name || "Student",
-          isCurrentUser: student?.userId?._id === user?._id,
-          problems: `${student?.solved_problems || 0}/${total_problems || 0} problems`,
-          percentage: total_problems > 0
-            ? Math.round((student?.solved_problems / total_problems) * 100)
-            : 0
-        })));
+const sortedStudents = studentsOnly
+  .sort((a, b) => (b?.solved_problems || 0) - (a?.solved_problems || 0));
+
+setLeaderboard(sortedStudents.map((student, index) => ({
+  rank: `#${index + 1}`,
+  name: student?.userId?.name || "Student",
+  isCurrentUser: student?.userId?._id === user?._id,
+  problems: `${student?.solved_problems || 0}/${total_problems || 0} problems`,
+  percentage: total_problems > 0
+    ? Math.round((student?.solved_problems / total_problems) * 25) // আপনার ২৫-এর ভিত্তিতে
+    : 0
+})));
       }
     } catch (err) {
       console.error("Dashboard data fetch error:", err);
