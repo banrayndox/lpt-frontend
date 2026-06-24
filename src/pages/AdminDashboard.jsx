@@ -59,7 +59,9 @@ const AdminDashboard = () => {
       if (overviewRes.data?.success) {
         const data = overviewRes.data;
         setLabs(data.labs || []);
-        setStudents(Array.isArray(data.users) ? data.users : []);
+        const allUsers = Array.isArray(data.users) ? data.users : [];
+        const onlyStudents = allUsers.filter(user => user?.role === 'Student');
+        setStudents(onlyStudents);
         setTeacher(prev => ({ ...prev, joinToken: data.joinToken || "" }));
       }
     } catch (error) {
