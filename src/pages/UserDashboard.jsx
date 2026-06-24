@@ -77,20 +77,26 @@ const UserDashboard = () => {
             ? Math.round((item.score / item.lab.totalProblems) * 25)
             : 0
         })));
-
+// 🏆 লিডারবোর্ড – শুধু Student রোল
 const studentsOnly = (all_students_profile_in_this_section || [])
-  .filter(student => student?.userId?.role === 'Student'); // ফিল্টার
+  .filter(student => {
+    // role ফিল্ডটি যেখানেই থাকুক না কেন, খুঁজে বের করি
+    const role = student?.role || student?.userId?.role || '';
+    // কেস-ইনসেনসিটিভ তুলনা (যেমন 'Student', 'student', 'STUDENT' সবই ধরা পড়বে)
+    return role.toLowerCase() === 'student';
+  });
 
 const sortedStudents = studentsOnly
   .sort((a, b) => (b?.solved_problems || 0) - (a?.solved_problems || 0));
 
 setLeaderboard(sortedStudents.map((student, index) => ({
   rank: `#${index + 1}`,
-  name: student?.userId?.name || "Student",
-  isCurrentUser: student?.userId?._id === user?._id,
+  // name ফিল্ডটিও চেক করুন – হতে পারে সরাসরি student.name অথবা student.userId.name
+  name: student?.name || student?.userId?.name || "Student",
+  isCurrentUser: (student?._id === user?._id) || (student?.userId?._id === user?._id),
   problems: `${student?.solved_problems || 0}/${total_problems || 0} problems`,
   percentage: total_problems > 0
-    ? Math.round((student?.solved_problems / total_problems) * 25) // আপনার ২৫-এর ভিত্তিতে
+    ? Math.round((student?.solved_problems / total_problems) * 25)
     : 0
 })));
       }
