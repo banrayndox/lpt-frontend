@@ -63,7 +63,7 @@ const UserDashboard = () => {
 
         setStats([
           { title: "Problems solved", value: `${solved_problems || 0}/${total_problems || 0}`, isActive: false },
-          { title: "Overall score", value: `${overallPercentage}%`, isActive: true },
+          { title: "Overall Mark", value: `${overallPercentage}`, isActive: true },
           { title: "Labs completed", value: labsCompletedCount, isActive: false },
         ]);
 
@@ -79,7 +79,7 @@ const UserDashboard = () => {
         })));
 
 const studentsOnly = (all_students_profile_in_this_section || [])
-  .filter(student => student?.userId?.role === 'student'); // ফিল্টার
+  .filter(student => student?.userId?.role === 'Student'); // ফিল্টার
 
 const sortedStudents = studentsOnly
   .sort((a, b) => (b?.solved_problems || 0) - (a?.solved_problems || 0));
