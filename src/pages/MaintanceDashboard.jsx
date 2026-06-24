@@ -14,22 +14,25 @@ const MaintenanceDashboard = () => {
     headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
   }), []);
 
-  const fetchUsers = useCallback(async () => {
-    try {
-      setIsLoading(true);
-      const res = await axios.get(`${baseUrl}/users`, getConfig());
-      if (res.data?.success) {
-      const filteredUsers = res.data.users.filter(user => user.role !== 'Maintance');
-      
-      setUsers(filteredUsers || []);
-      }
-    } catch (error) {
-      console.error("Fetch Users Error:", error);
-      toast.error("Failed to fetch users.");
-    } finally {
-      setIsLoading(false);
+// fetchUsers এর ভেতরে এই অংশটি আপডেট করুন
+const fetchUsers = useCallback(async () => {
+  try {
+    setIsLoading(true);
+    const res = await axios.get(`${baseUrl}/users`, getConfig());
+    if (res.data?.success) {
+      // এখানে শুধু Maintance ফিল্টার করবেন না, চাইলে রোল অনুযায়ী সর্টও করতে পারেন
+      const sortedUsers = res.data.users.sort((a, b) => 
+        (a.role === 'Maintance' ? -1 : 1)
+      );
+      setUsers(sortedUsers || []);
     }
-  }, [baseUrl, getConfig]);
+  } catch (error) {
+    console.error("Fetch Users Error:", error);
+    toast.error("Failed to fetch users.");
+  } finally {
+    setIsLoading(false);
+  }
+}, [baseUrl, getConfig]);
 
   useEffect(() => {
     fetchUsers();

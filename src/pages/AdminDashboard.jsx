@@ -57,11 +57,13 @@ const AdminDashboard = () => {
       }
 
       // ২. তোমার রাউটার অনুযায়ী: router.get('/admin/overview', protect, authorizeTeacher...)
-      const studentsRes = await axios.get(`${baseUrl}/admin/overview`, config);
-      if (studentsRes.data && studentsRes.data.success) {
-        const sData = studentsRes.data.users || studentsRes.data.users || [];
-        setStudents(Array.isArray(sData) ? sData : []);
-      }
+const studentsRes = await axios.get(`${baseUrl}/admin/overview`, config);
+if (studentsRes.data && studentsRes.data.success) {
+  // আগের ডেটা ফরম্যাট চেক করুন। যদি ব্যাকএন্ডে populate ব্যবহার করেন, 
+  // তবে নিশ্চিত হোন ডাটাটি 'users' ফিল্ডেই আসছে।
+  const sData = studentsRes.data.users || []; 
+  setStudents(Array.isArray(sData) ? sData : []);
+}
     } catch (error) {
       console.error("Dashboard Data Fetch Error:", error);
     } finally {
@@ -121,13 +123,17 @@ const addTodayLab = async () => {
     toast.error("No students found.");
     return;
   }
+const cleanScores = {};
+  students.forEach(s => {
+    cleanScores[s._id] = newLabScores[s._id] || 0;
+  });
 
   try {
     // এখানে response-টি সঠিকভাবে নিন
-    const res = await axios.post(`${baseUrl}/admin/labs`, {
+   const res = await axios.post(`${baseUrl}/admin/labs`, {
       ...newLab,
-      scores: newLabScores 
-    }, config);
+      scores: cleanScores // ক্লিনিং করে পাঠানো নিরাপদ
+    }, config); 
 
     // এখন res.data চেক করুন
     if (res && res.data && res.data.success) {
