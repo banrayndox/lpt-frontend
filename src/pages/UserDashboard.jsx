@@ -43,7 +43,7 @@ const UserDashboard = () => {
   // ==========================================
   // ড্যাশবোর্ড ডেটা ফেচ (currentUser প্যারামিটার)
   // ==========================================
- const fetchDashboardData = async (user) => {
+const fetchDashboardData = async (user) => {
   try {
     setIsDataLoading(true);
     setError(null);
@@ -55,7 +55,7 @@ const UserDashboard = () => {
     if (response.data?.result) {
       const { user_labs, all_students_profile_in_this_section, total_problems, solved_problems } = response.data.result;
 
-      // 📊 স্ট্যাটস
+      // স্ট্যাটস (অপরিবর্তিত)
       const overallPercentage = total_problems > 0 ? Math.round((solved_problems / total_problems) * 25) : 0;
       const labsCompletedCount = Array.isArray(user_labs)
         ? user_labs.filter(lab => lab?.score > 0).length.toString()
@@ -67,7 +67,7 @@ const UserDashboard = () => {
         { title: "Labs completed", value: labsCompletedCount, isActive: false },
       ]);
 
-      // 📚 ল্যাব হিস্ট্রি
+      // ল্যাব হিস্ট্রি (অপরিবর্তিত)
       setLabHistory((user_labs || []).map((item) => ({
         id: item.lab?._id || Math.random(),
         name: item.lab?.title || "Unknown Lab",
@@ -78,11 +78,8 @@ const UserDashboard = () => {
           : 0
       })));
 
-      // 🏆 লিডারবোর্ড
-      const sortedStudents = (all_students_profile_in_this_section || [])
-        .sort((a, b) => (b?.solved_problems || 0) - (a?.solved_problems || 0));
-
-      setLeaderboard(sortedStudents.map((student, index) => ({
+      // 🏆 লিডারবোর্ড – সরাসরি (ব্যাকএন্ড ইতিমধ্যে ফিল্টার ও সর্ট করে দিয়েছে)
+      const leaderboardData = (all_students_profile_in_this_section || []).map((student, index) => ({
         rank: `#${index + 1}`,
         name: student.userId?.name || "Student",
         isCurrentUser: student.userId?._id === user._id,
@@ -90,7 +87,9 @@ const UserDashboard = () => {
         percentage: total_problems > 0
           ? Math.round((student.solved_problems / total_problems) * 25)
           : 0
-      })));
+      }));
+
+      setLeaderboard(leaderboardData);
     }
   } catch (err) {
     console.error("Dashboard data fetch error:", err);
