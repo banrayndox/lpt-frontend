@@ -43,65 +43,63 @@ const UserDashboard = () => {
   // ==========================================
   // ড্যাশবোর্ড ডেটা ফেচ (currentUser প্যারামিটার)
   // ==========================================
-  const fetchDashboardData = async (user) => {
-    try {
-      setIsDataLoading(true);
-      setError(null);
-      const token = localStorage.getItem("token");
-      const response = await axios.get(`${baseUrl}/user/dashboard`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+ const fetchDashboardData = async (user) => {
+  try {
+    setIsDataLoading(true);
+    setError(null);
+    const token = localStorage.getItem("token");
+    const response = await axios.get(`${baseUrl}/user/dashboard`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
 
-      if (response.data?.result) {
-        const { user_labs, all_students_profile_in_this_section, total_problems, solved_problems } = response.data.result;
+    if (response.data?.result) {
+      const { user_labs, all_students_profile_in_this_section, total_problems, solved_problems } = response.data.result;
 
-        // 📊 স্ট্যাটস
-        const overallPercentage = total_problems > 0 ? Math.round((solved_problems / total_problems) * 25) : 0;
-        const labsCompletedCount = Array.isArray(user_labs)
-          ? user_labs.filter(lab => lab?.score > 0).length.toString()
-          : "0";
+      // 📊 স্ট্যাটস
+      const overallPercentage = total_problems > 0 ? Math.round((solved_problems / total_problems) * 25) : 0;
+      const labsCompletedCount = Array.isArray(user_labs)
+        ? user_labs.filter(lab => lab?.score > 0).length.toString()
+        : "0";
 
-        setStats([
-          { title: "Problems solved", value: `${solved_problems || 0}/${total_problems || 0}`, isActive: false },
-          { title: "Overall Mark", value: `${overallPercentage}`, isActive: true },
-          { title: "Labs completed", value: labsCompletedCount, isActive: false },
-        ]);
+      setStats([
+        { title: "Problems solved", value: `${solved_problems || 0}/${total_problems || 0}`, isActive: false },
+        { title: "Overall Mark", value: `${overallPercentage}`, isActive: true },
+        { title: "Labs completed", value: labsCompletedCount, isActive: false },
+      ]);
 
-        // 📚 ল্যাব হিস্ট্রি
-        setLabHistory((user_labs || []).map((item) => ({
-          id: item.lab?._id || Math.random(),
-          name: item.lab?.title || "Unknown Lab",
-          date: item.lab?.date ? new Date(item.lab.date).toLocaleDateString('en-CA') : "N/A",
-          solved: `${item.score || 0}/${item.lab?.totalProblems || 0}`,
-          marks: item.lab?.totalProblems > 0
-            ? Math.round((item.score / item.lab.totalProblems) * 25)
-            : 0
-        })));
-// 🏆 লিডারবোর্ড – শুধু Student রোল
-const studentsOnly = (all_students_profile_in_this_section || [])
-  .filter(student => student?.role === 'Student'); // exact match
+      // 📚 ল্যাব হিস্ট্রি
+      setLabHistory((user_labs || []).map((item) => ({
+        id: item.lab?._id || Math.random(),
+        name: item.lab?.title || "Unknown Lab",
+        date: item.lab?.date ? new Date(item.lab.date).toLocaleDateString('en-CA') : "N/A",
+        solved: `${item.score || 0}/${item.lab?.totalProblems || 0}`,
+        marks: item.lab?.totalProblems > 0
+          ? Math.round((item.score / item.lab.totalProblems) * 25)
+          : 0
+      })));
 
-const sortedStudents = studentsOnly
-  .sort((a, b) => (b?.solved_problems || 0) - (a?.solved_problems || 0));
-console.log(sortedStudents)
-setLeaderboard(sortedStudents.map((student, index) => ({
-  rank: `#${index + 1}`,
-  name: student.name || "Student",  // শুধু নাম
-  isCurrentUser: student._id === user._id,
-  problems: `${student.solved_problems || 0}/${total_problems || 0} problems`,
-  percentage: total_problems > 0
-    ? Math.round((student.solved_problems / total_problems) * 25)
-    : 0
-})));
-      }
-    } catch (err) {
-      console.error("Dashboard data fetch error:", err);
-      setError("Failed to load dashboard data.");
-      toast.error("Could not load dashboard");
-    } finally {
-      setIsDataLoading(false);
+      // 🏆 লিডারবোর্ড
+      const sortedStudents = (all_students_profile_in_this_section || [])
+        .sort((a, b) => (b?.solved_problems || 0) - (a?.solved_problems || 0));
+
+      setLeaderboard(sortedStudents.map((student, index) => ({
+        rank: `#${index + 1}`,
+        name: student.userId?.name || "Student",
+        isCurrentUser: student.userId?._id === user._id,
+        problems: `${student.solved_problems || 0}/${total_problems || 0} problems`,
+        percentage: total_problems > 0
+          ? Math.round((student.solved_problems / total_problems) * 25)
+          : 0
+      })));
     }
-  };
+  } catch (err) {
+    console.error("Dashboard data fetch error:", err);
+    setError("Failed to load dashboard data.");
+    toast.error("Could not load dashboard");
+  } finally {
+    setIsDataLoading(false);
+  }
+};
 
   // ==========================================
   // সেকশন জয়েন
