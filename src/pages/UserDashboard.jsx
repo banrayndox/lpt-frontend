@@ -83,7 +83,7 @@ const studentsOnly = (all_students_profile_in_this_section || [])
 
 const sortedStudents = studentsOnly
   .sort((a, b) => (b?.solved_problems || 0) - (a?.solved_problems || 0));
-
+console.log(sortedStudents)
 setLeaderboard(sortedStudents.map((student, index) => ({
   rank: `#${index + 1}`,
   name: student.name || "Student",  // শুধু নাম
