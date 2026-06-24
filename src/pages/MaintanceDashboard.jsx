@@ -116,25 +116,26 @@ const fetchUsers = useCallback(async () => {
                   {user.role}
                 </span>
               </td>
-              <td className="py-4 px-6 text-right space-x-2">
-                {/* 'Maintance' রোল হলে বাটন হাইড হবে */}
-                {user.role !== 'Maintance' && (
-                  <button 
-                    onClick={() => handleRoleChange(user._id, user.role)}
-                    className="p-2 hover:bg-gray-200 rounded-lg text-gray-600 transition-colors"
-                    title="Toggle Role"
-                  >
-                    {user.role === 'Teacher' ? <UserCheck className="w-4 h-4" /> : <UserCog className="w-4 h-4" />}
-                  </button>
-                )}
-                <button 
-                  onClick={() => handleRemoveUser(user._id)}
-                  className="p-2 hover:bg-red-50 rounded-lg text-red-500 transition-colors"
-                  title="Delete User"
-                >
-                  <Trash2 className="w-4 h-4" />
-                </button>
-              </td>
+<td className="py-4 px-6 text-right space-x-2">
+  {user.role !== 'Maintance' && (
+    <>
+      <button 
+        onClick={() => handleRoleChange(user._id, user.role)}
+        className="p-2 hover:bg-gray-200 rounded-lg text-gray-600 transition-colors"
+        title="Toggle Role"
+      >
+        {user.role === 'Teacher' ? <UserCheck className="w-4 h-4" /> : <UserCog className="w-4 h-4" />}
+      </button>
+      <button 
+        onClick={() => handleRemoveUser(user._id)}
+        className="p-2 hover:bg-red-50 rounded-lg text-red-500 transition-colors"
+        title="Delete User"
+      >
+        <Trash2 className="w-4 h-4" />
+      </button>
+    </>
+  )}
+</td>
             </tr>
           ))}
         </tbody>
